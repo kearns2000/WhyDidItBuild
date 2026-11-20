@@ -1,0 +1,20 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <LangVersion>latest</LangVersion>
+    <RootNamespace>WhyDidItBuild.Binlog</RootNamespace>
+  </PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\WhyDidItBuild.Core\WhyDidItBuild.Core.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <!--
+      Compile against the MSBuild binary-log reader. Runtime assets stay out of this project so a
+      VSIX does not ship a second Microsoft.Build. Visual Studio already loads that assembly.
+      Tests reference the package directly when they execute the reader.
+    -->
+    <PackageReference Include="Microsoft.Build" Version="17.14.28" PrivateAssets="all" ExcludeAssets="runtime" />
+  </ItemGroup>
+</Project>

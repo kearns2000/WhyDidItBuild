@@ -1,0 +1,10 @@
+bin/
+obj/
+.vs/
+*.user
+*.suo
+*.binlog
+!src/WhyDidItBuild.Binlog/
+TestResults/
+.idea/
+*.vsix

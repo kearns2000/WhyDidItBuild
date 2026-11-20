@@ -1,0 +1,25 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net10.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Library\Library.csproj" />
+    <!-- The recurring file lives under obj, which the SDK does not compile. The fast up-to-date check still sees it. -->
+    <UpToDateCheckInput Include="$(MSBuildProjectDirectory)/obj/GeneratedRoutes.cs" />
+  </ItemGroup>
+  <!--
+    Rewrites obj/GeneratedRoutes.cs after a real build. The next Visual Studio fast up-to-date check
+    sees that file as newer than the build outputs and sends App to MSBuild again.
+    Design-time builds do not run this target, and the checked-in project stays unmodified.
+  -->
+  <Target Name="TouchGeneratedRoutes" AfterTargets="Build" Condition="'$(DesignTimeBuild)' != 'true'">
+    <MakeDir Directories="$(MSBuildProjectDirectory)/obj" />
+    <WriteLinesToFile
+      File="$(MSBuildProjectDirectory)/obj/GeneratedRoutes.cs"
+      Lines="// Rewritten after every build so the next fast up-to-date check sees a newer input than the build outputs."
+      Overwrite="true" />
+  </Target>
+</Project>

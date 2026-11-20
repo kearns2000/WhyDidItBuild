@@ -1,0 +1,27 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <IsPackable>false</IsPackable>
+  </PropertyGroup>
+  <ItemGroup>
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.14.1" />
+    <PackageReference Include="xunit" Version="2.9.3" />
+    <PackageReference Include="xunit.runner.visualstudio" Version="2.8.2">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <!--
+      Compile against the patched 17.14 reader. Do not copy that build into the test output:
+      this machine's SDK writes newer binlogs than 17.14 can replay. SdkMsBuildResolver loads
+      the SDK's Microsoft.Build, which implements the same 15.1.0.0 surface the reader calls.
+    -->
+    <PackageReference Include="Microsoft.Build" Version="17.14.28" ExcludeAssets="runtime" />
+    <PackageReference Include="Microsoft.Build.Framework" Version="17.14.28" ExcludeAssets="runtime" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\src\WhyDidItBuild.Core\WhyDidItBuild.Core.csproj" />
+    <ProjectReference Include="..\..\src\WhyDidItBuild.Binlog\WhyDidItBuild.Binlog.csproj" />
+  </ItemGroup>
+</Project>
