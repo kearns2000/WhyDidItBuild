@@ -1,4 +1,5 @@
 using System.IO;
+using System.Runtime.InteropServices;
 using EnvDTE;
 using Microsoft.VisualStudio;
 using Microsoft.VisualStudio.Shell;
@@ -41,7 +42,7 @@ internal sealed class SolutionBuildObserver : IVsUpdateSolutionEvents, IVsUpdate
         _joinableTaskFactory = joinableTaskFactory;
     }
 
-    public int UpdateSolution_Begin(out int pfCancelUpdate)
+    public int UpdateSolution_Begin(ref int pfCancelUpdate)
     {
         pfCancelUpdate = 0;
         ThreadHelper.ThrowIfNotOnUIThread();
@@ -159,7 +160,7 @@ internal sealed class SolutionBuildObserver : IVsUpdateSolutionEvents, IVsUpdate
         });
     }
 
-    public int UpdateSolution_StartUpdate(out int pfCancelUpdate)
+    public int UpdateSolution_StartUpdate(ref int pfCancelUpdate)
     {
         pfCancelUpdate = 0;
         return VSConstants.S_OK;
@@ -173,7 +174,7 @@ internal sealed class SolutionBuildObserver : IVsUpdateSolutionEvents, IVsUpdate
 
     public int OnActiveProjectCfgChange(IVsHierarchy pIVsHierarchy) => VSConstants.S_OK;
 
-    public int UpdateProjectCfg_Begin(IVsHierarchy pHierProj, IVsCfg pCfgProj, IVsCfg pCfgSln, uint dwAction, out int pfCancel)
+    public int UpdateProjectCfg_Begin(IVsHierarchy pHierProj, IVsCfg pCfgProj, IVsCfg pCfgSln, uint dwAction, ref int pfCancel)
     {
         pfCancel = 0;
         ThreadHelper.ThrowIfNotOnUIThread();

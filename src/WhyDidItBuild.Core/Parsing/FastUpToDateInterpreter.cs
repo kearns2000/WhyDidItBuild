@@ -18,7 +18,7 @@ internal static partial class FastUpToDateInterpreter
 {
     public static InterpretedLine Interpret(string message)
     {
-        var text = message.Trim().Replace("not up to date", "not up-to-date", StringComparison.OrdinalIgnoreCase);
+        var text = Regex.Replace(message.Trim(), "not up to date", "not up-to-date", RegexOptions.IgnoreCase | RegexOptions.CultureInvariant);
         if (text.Length == 0)
         {
             return Informational();
@@ -207,81 +207,81 @@ internal static partial class FastUpToDateInterpreter
 
     private static InterpretedLine Informational() => new(ReasonKind.None, "", null, false);
 
-    [GeneratedRegex(@"^Project is up-to-date\.?$", RegexOptions.IgnoreCase | RegexOptions.CultureInvariant)]
-    private static partial Regex UpToDatePattern();
+    private static Regex? upToDatePattern;
+    private static Regex UpToDatePattern() => upToDatePattern ??= new Regex(@"^Project is up-to-date\.?$", RegexOptions.IgnoreCase | RegexOptions.CultureInvariant);
 
-    [GeneratedRegex(@"^Input '(?<file>[^']+)' is newer \([^)]*\) than earliest output '[^']+' \([^)]*\), not up-to-date\.", RegexOptions.IgnoreCase | RegexOptions.CultureInvariant)]
-    private static partial Regex InputNewerPattern();
+    private static Regex? inputNewerPattern;
+    private static Regex InputNewerPattern() => inputNewerPattern ??= new Regex(@"^Input '(?<file>[^']+)' is newer \([^)]*\) than earliest output '[^']+' \([^)]*\), not up-to-date\.", RegexOptions.IgnoreCase | RegexOptions.CultureInvariant);
 
-    [GeneratedRegex(@"^Input \S+ item '(?<file>[^']+)' is newer \([^)]*\) than earliest output '[^']+' \([^)]*\), not up-to-date\.", RegexOptions.IgnoreCase | RegexOptions.CultureInvariant)]
-    private static partial Regex TypedInputNewerPattern();
+    private static Regex? typedInputNewerPattern;
+    private static Regex TypedInputNewerPattern() => typedInputNewerPattern ??= new Regex(@"^Input \S+ item '(?<file>[^']+)' is newer \([^)]*\) than earliest output '[^']+' \([^)]*\), not up-to-date\.", RegexOptions.IgnoreCase | RegexOptions.CultureInvariant);
 
-    [GeneratedRegex(@"^Input '(?<file>[^']+)' \([^)]*\) has been modified since the last successful build started \([^)]*\), not up-to-date\.", RegexOptions.IgnoreCase | RegexOptions.CultureInvariant)]
-    private static partial Regex ModifiedPattern();
+    private static Regex? modifiedPattern;
+    private static Regex ModifiedPattern() => modifiedPattern ??= new Regex(@"^Input '(?<file>[^']+)' \([^)]*\) has been modified since the last successful build started \([^)]*\), not up-to-date\.", RegexOptions.IgnoreCase | RegexOptions.CultureInvariant);
 
-    [GeneratedRegex(@"^Input \S+ item '(?<file>[^']+)' \([^)]*\) has been modified since the last successful build started \([^)]*\), not up-to-date\.", RegexOptions.IgnoreCase | RegexOptions.CultureInvariant)]
-    private static partial Regex TypedModifiedPattern();
+    private static Regex? typedModifiedPattern;
+    private static Regex TypedModifiedPattern() => typedModifiedPattern ??= new Regex(@"^Input \S+ item '(?<file>[^']+)' \([^)]*\) has been modified since the last successful build started \([^)]*\), not up-to-date\.", RegexOptions.IgnoreCase | RegexOptions.CultureInvariant);
 
-    [GeneratedRegex(@"^Output '(?<file>[^']+)' does not exist, not up-to-date\.", RegexOptions.IgnoreCase | RegexOptions.CultureInvariant)]
-    private static partial Regex OutputMissingPattern();
+    private static Regex? outputMissingPattern;
+    private static Regex OutputMissingPattern() => outputMissingPattern ??= new Regex(@"^Output '(?<file>[^']+)' does not exist, not up-to-date\.", RegexOptions.IgnoreCase | RegexOptions.CultureInvariant);
 
-    [GeneratedRegex(@"^Input '(?<file>[^']+)' does not exist and is required, not up-to-date\.", RegexOptions.IgnoreCase | RegexOptions.CultureInvariant)]
-    private static partial Regex InputMissingPattern();
+    private static Regex? inputMissingPattern;
+    private static Regex InputMissingPattern() => inputMissingPattern ??= new Regex(@"^Input '(?<file>[^']+)' does not exist and is required, not up-to-date\.", RegexOptions.IgnoreCase | RegexOptions.CultureInvariant);
 
-    [GeneratedRegex(@"^Input \S+ item '(?<file>[^']+)' does not exist and is required, not up-to-date\.", RegexOptions.IgnoreCase | RegexOptions.CultureInvariant)]
-    private static partial Regex TypedInputMissingPattern();
+    private static Regex? typedInputMissingPattern;
+    private static Regex TypedInputMissingPattern() => typedInputMissingPattern ??= new Regex(@"^Input \S+ item '(?<file>[^']+)' does not exist and is required, not up-to-date\.", RegexOptions.IgnoreCase | RegexOptions.CultureInvariant);
 
-    [GeneratedRegex(@"^The set of project items was changed more recently \([^)]*\) than the last successful build start time \([^)]*\), not up-to-date\.", RegexOptions.IgnoreCase | RegexOptions.CultureInvariant)]
-    private static partial Regex ItemsChangedPattern();
+    private static Regex? itemsChangedPattern;
+    private static Regex ItemsChangedPattern() => itemsChangedPattern ??= new Regex(@"^The set of project items was changed more recently \([^)]*\) than the last successful build start time \([^)]*\), not up-to-date\.", RegexOptions.IgnoreCase | RegexOptions.CultureInvariant);
 
-    [GeneratedRegex(@"^The up-to-date check has not yet run for this project\. Not up-to-date\.", RegexOptions.IgnoreCase | RegexOptions.CultureInvariant)]
-    private static partial Regex FirstRunPattern();
+    private static Regex? firstRunPattern;
+    private static Regex FirstRunPattern() => firstRunPattern ??= new Regex(@"^The up-to-date check has not yet run for this project\. Not up-to-date\.", RegexOptions.IgnoreCase | RegexOptions.CultureInvariant);
 
-    [GeneratedRegex(@"^The 'DisableFastUpToDateCheck' property is 'true', not up-to-date\.", RegexOptions.IgnoreCase | RegexOptions.CultureInvariant)]
-    private static partial Regex DisabledPattern();
+    private static Regex? disabledPattern;
+    private static Regex DisabledPattern() => disabledPattern ??= new Regex(@"^The 'DisableFastUpToDateCheck' property is 'true', not up-to-date\.", RegexOptions.IgnoreCase | RegexOptions.CultureInvariant);
 
-    [GeneratedRegex(@"^Critical build tasks are running, not up-to-date\.", RegexOptions.IgnoreCase | RegexOptions.CultureInvariant)]
-    private static partial Regex CriticalPattern();
+    private static Regex? criticalPattern;
+    private static Regex CriticalPattern() => criticalPattern ??= new Regex(@"^Critical build tasks are running, not up-to-date\.", RegexOptions.IgnoreCase | RegexOptions.CultureInvariant);
 
-    [GeneratedRegex(@"^Item with CopyToOutputDirectory=""[^""]*"" source '(?<file>[^']+)' is newer than destination '[^']+', not up-to-date\.", RegexOptions.IgnoreCase | RegexOptions.CultureInvariant)]
-    private static partial Regex CopyToOutputNewerPattern();
+    private static Regex? copyToOutputNewerPattern;
+    private static Regex CopyToOutputNewerPattern() => copyToOutputNewerPattern ??= new Regex(@"^Item with CopyToOutputDirectory=""[^""]*"" source '(?<file>[^']+)' is newer than destination '[^']+', not up-to-date\.", RegexOptions.IgnoreCase | RegexOptions.CultureInvariant);
 
-    [GeneratedRegex(@"^Source is newer than build output destination, not up-to-date\.", RegexOptions.IgnoreCase | RegexOptions.CultureInvariant)]
-    private static partial Regex BuiltSourceNewerPattern();
+    private static Regex? builtSourceNewerPattern;
+    private static Regex BuiltSourceNewerPattern() => builtSourceNewerPattern ??= new Regex(@"^Source is newer than build output destination, not up-to-date\.", RegexOptions.IgnoreCase | RegexOptions.CultureInvariant);
 
-    [GeneratedRegex(@"^Source '(?<file>[^']+)' does not exist, not up-to-date\.", RegexOptions.IgnoreCase | RegexOptions.CultureInvariant)]
-    private static partial Regex CopySourceMissingPattern();
+    private static Regex? copySourceMissingPattern;
+    private static Regex CopySourceMissingPattern() => copySourceMissingPattern ??= new Regex(@"^Source '(?<file>[^']+)' does not exist, not up-to-date\.", RegexOptions.IgnoreCase | RegexOptions.CultureInvariant);
 
-    [GeneratedRegex(@"^Source '(?<file>[^']+)' does not exist for build into target '[^']+', not up-to-date\.", RegexOptions.IgnoreCase | RegexOptions.CultureInvariant)]
-    private static partial Regex BuiltSourceMissingPattern();
+    private static Regex? builtSourceMissingPattern;
+    private static Regex BuiltSourceMissingPattern() => builtSourceMissingPattern ??= new Regex(@"^Source '(?<file>[^']+)' does not exist for build into target '[^']+', not up-to-date\.", RegexOptions.IgnoreCase | RegexOptions.CultureInvariant);
 
-    [GeneratedRegex(@"^Destination '(?<file>[^']+)' does not exist, not up-to-date\.", RegexOptions.IgnoreCase | RegexOptions.CultureInvariant)]
-    private static partial Regex CopyDestinationMissingPattern();
+    private static Regex? copyDestinationMissingPattern;
+    private static Regex CopyDestinationMissingPattern() => copyDestinationMissingPattern ??= new Regex(@"^Destination '(?<file>[^']+)' does not exist, not up-to-date\.", RegexOptions.IgnoreCase | RegexOptions.CultureInvariant);
 
-    [GeneratedRegex(@"^Destination '(?<file>[^']+)' does not exist for copy from '[^']+', not up-to-date\.", RegexOptions.IgnoreCase | RegexOptions.CultureInvariant)]
-    private static partial Regex BuiltDestinationMissingPattern();
+    private static Regex? builtDestinationMissingPattern;
+    private static Regex BuiltDestinationMissingPattern() => builtDestinationMissingPattern ??= new Regex(@"^Destination '(?<file>[^']+)' does not exist for copy from '[^']+', not up-to-date\.", RegexOptions.IgnoreCase | RegexOptions.CultureInvariant);
 
-    [GeneratedRegex(@"^Item with CopyToOutputDirectory=""Always"" source \('(?<file>[^']+)' [^)]*\) differs from destination \('[^']+' [^)]*\), not up-to-date\.", RegexOptions.IgnoreCase | RegexOptions.CultureInvariant)]
-    private static partial Regex CopyAlwaysPattern();
+    private static Regex? copyAlwaysPattern;
+    private static Regex CopyAlwaysPattern() => copyAlwaysPattern ??= new Regex(@"^Item with CopyToOutputDirectory=""Always"" source \('(?<file>[^']+)' [^)]*\) differs from destination \('[^']+' [^)]*\), not up-to-date\.", RegexOptions.IgnoreCase | RegexOptions.CultureInvariant);
 
-    [GeneratedRegex(@"^Input marker '(?<file>[^']+)' is newer \([^)]*\) than output marker '[^']+' \([^)]*\), not up-to-date\.", RegexOptions.IgnoreCase | RegexOptions.CultureInvariant)]
-    private static partial Regex MarkerPattern();
+    private static Regex? markerPattern;
+    private static Regex MarkerPattern() => markerPattern ??= new Regex(@"^Input marker '(?<file>[^']+)' is newer \([^)]*\) than output marker '[^']+' \([^)]*\), not up-to-date\.", RegexOptions.IgnoreCase | RegexOptions.CultureInvariant);
 
-    [GeneratedRegex(@"^Up-to-date check threw an exception\. Not up-to-date\.", RegexOptions.IgnoreCase | RegexOptions.CultureInvariant)]
-    private static partial Regex ExceptionPattern();
+    private static Regex? exceptionPattern;
+    private static Regex ExceptionPattern() => exceptionPattern ??= new Regex(@"^Up-to-date check threw an exception\. Not up-to-date\.", RegexOptions.IgnoreCase | RegexOptions.CultureInvariant);
 
-    [GeneratedRegex(@"^Exception copying file, scheduling MSBuild:", RegexOptions.IgnoreCase | RegexOptions.CultureInvariant)]
-    private static partial Regex CopyExceptionPattern();
+    private static Regex? copyExceptionPattern;
+    private static Regex CopyExceptionPattern() => copyExceptionPattern ??= new Regex(@"^Exception copying file, scheduling MSBuild:", RegexOptions.IgnoreCase | RegexOptions.CultureInvariant);
 
-    [GeneratedRegex(@"^Checking configuration (?<config>.+):\s*$", RegexOptions.IgnoreCase | RegexOptions.CultureInvariant)]
-    private static partial Regex ConfigurationPattern();
+    private static Regex? configurationPattern;
+    private static Regex ConfigurationPattern() => configurationPattern ??= new Regex(@"^Checking configuration (?<config>.+):\s*$", RegexOptions.IgnoreCase | RegexOptions.CultureInvariant);
 
-    [GeneratedRegex(@"^\S+ item (?:added|removed) '(?<file>[^']+)'\s*$", RegexOptions.IgnoreCase | RegexOptions.CultureInvariant)]
-    private static partial Regex ChangedItemPattern();
+    private static Regex? changedItemPattern;
+    private static Regex ChangedItemPattern() => changedItemPattern ??= new Regex(@"^\S+ item (?:added|removed) '(?<file>[^']+)'\s*$", RegexOptions.IgnoreCase | RegexOptions.CultureInvariant);
 
-    [GeneratedRegex(@"^Build acceleration copied (?<count>\d+) files\.", RegexOptions.IgnoreCase | RegexOptions.CultureInvariant)]
-    private static partial Regex AccelerationPattern();
+    private static Regex? accelerationPattern;
+    private static Regex AccelerationPattern() => accelerationPattern ??= new Regex(@"^Build acceleration copied (?<count>\d+) files\.", RegexOptions.IgnoreCase | RegexOptions.CultureInvariant);
 
-    [GeneratedRegex(@"'(?<file>[^']+)'", RegexOptions.CultureInvariant)]
-    private static partial Regex QuotedPathPattern();
+    private static Regex? quotedPathPattern;
+    private static Regex QuotedPathPattern() => quotedPathPattern ??= new Regex(@"'(?<file>[^']+)'", RegexOptions.CultureInvariant);
 }

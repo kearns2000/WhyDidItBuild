@@ -1,3 +1,4 @@
+using System.ComponentModel.Design;
 using System.Runtime.InteropServices;
 using EnvDTE;
 using Microsoft.VisualStudio;
@@ -18,7 +19,7 @@ public sealed class WhyDidItBuildPackage : AsyncPackage
 {
     private BuildSession? _session;
 
-    public BuildSession Session => _session ?? throw new InvalidOperationException("Why Did It Build? is not initialized.");
+    internal BuildSession Session => _session ?? throw new InvalidOperationException("Why Did It Build? is not initialized.");
 
     protected override async Task InitializeAsync(CancellationToken cancellationToken, IProgress<ServiceProgressData> progress)
     {
@@ -60,8 +61,7 @@ public sealed class WhyDidItBuildPackage : AsyncPackage
         string? path = null;
         string? name = null;
         if (GetService(typeof(SVsShellMonitorSelection)) is IVsMonitorSelection monitor
-            && monitor.GetCurrentSelection(out var hierarchy, out _, out _, out _) == VSConstants.S_OK
-            && hierarchy is not null
+            && GetSelectedHierarchy(monitor) is { } hierarchy
             && hierarchy.GetProperty((uint)VSConstants.VSITEMID_ROOT, (int)__VSHPROPID.VSHPROPID_ExtObject, out var ext) == VSConstants.S_OK
             && ext is Project project)
         {
@@ -73,6 +73,35 @@ public sealed class WhyDidItBuildPackage : AsyncPackage
         var frame = (IVsWindowFrame)window.Frame;
         frame.Show();
         window.SelectProject(path, name);
+    }
+
+    private static IVsHierarchy? GetSelectedHierarchy(IVsMonitorSelection monitor)
+    {
+        ThreadHelper.ThrowIfNotOnUIThread();
+        var hierarchyPointer = IntPtr.Zero;
+        var containerPointer = IntPtr.Zero;
+        try
+        {
+            if (monitor.GetCurrentSelection(out hierarchyPointer, out _, out _, out containerPointer) != VSConstants.S_OK
+                || hierarchyPointer == IntPtr.Zero)
+            {
+                return null;
+            }
+
+            return Marshal.GetObjectForIUnknown(hierarchyPointer) as IVsHierarchy;
+        }
+        finally
+        {
+            if (hierarchyPointer != IntPtr.Zero)
+            {
+                Marshal.Release(hierarchyPointer);
+            }
+
+            if (containerPointer != IntPtr.Zero)
+            {
+                Marshal.Release(containerPointer);
+            }
+        }
     }
 
     private WhyDidItBuildToolWindow CreateWindow()

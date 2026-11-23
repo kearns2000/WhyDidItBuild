@@ -37,7 +37,7 @@ public partial class WhyDidItBuildControl : UserControl
     private BuildReport? _latest;
     private BuildReport? _previous;
 
-    public WhyDidItBuildControl(BuildSession session)
+    internal WhyDidItBuildControl(BuildSession session)
     {
         InitializeComponent();
         _session = session;

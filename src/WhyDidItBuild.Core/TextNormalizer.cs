@@ -75,12 +75,12 @@ public static partial class TextNormalizer
         return value.Value.ToLocalTime().ToString("yyyy-MM-dd HH:mm:ss", CultureInfo.CurrentCulture);
     }
 
-    [GeneratedRegex(@"\d{4}-\d{2}-\d{2}[ T]\d{2}:\d{2}:\d{2}(?:\.\d+)?", RegexOptions.CultureInvariant)]
-    private static partial Regex TimestampPattern();
+    private static Regex? timestampPattern;
+    private static Regex TimestampPattern() => timestampPattern ??= new Regex(@"\d{4}-\d{2}-\d{2}[ T]\d{2}:\d{2}:\d{2}(?:\.\d+)?", RegexOptions.CultureInvariant);
 
-    [GeneratedRegex(@"\b\d{1,2}/\d{1,2}/\d{2,4}\s+\d{1,2}:\d{2}:\d{2}(?:\.\d+)?\s*(?:AM|PM)?", RegexOptions.IgnoreCase | RegexOptions.CultureInvariant)]
-    private static partial Regex ClockPattern();
+    private static Regex? clockPattern;
+    private static Regex ClockPattern() => clockPattern ??= new Regex(@"\b\d{1,2}/\d{1,2}/\d{2,4}\s+\d{1,2}:\d{2}:\d{2}(?:\.\d+)?\s*(?:AM|PM)?", RegexOptions.IgnoreCase | RegexOptions.CultureInvariant);
 
-    [GeneratedRegex(@"\b\d+(?:\.\d+)?\s*ms\b", RegexOptions.IgnoreCase | RegexOptions.CultureInvariant)]
-    private static partial Regex DurationPattern();
+    private static Regex? durationPattern;
+    private static Regex DurationPattern() => durationPattern ??= new Regex(@"\b\d+(?:\.\d+)?\s*ms\b", RegexOptions.IgnoreCase | RegexOptions.CultureInvariant);
 }

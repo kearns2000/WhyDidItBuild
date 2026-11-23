@@ -799,36 +799,36 @@ public static partial class BuildOutputParser
         }
     }
 
-    [GeneratedRegex(@"^(?<slot>\d+)>\s?(?<rest>.*)$", RegexOptions.CultureInvariant)]
-    private static partial Regex SlotPattern();
+    private static Regex? slotPattern;
+    private static Regex SlotPattern() => slotPattern ??= new Regex(@"^(?<slot>\d+)>\s?(?<rest>.*)$", RegexOptions.CultureInvariant);
 
-    [GeneratedRegex(@"^FastUpToDate:\s*(?<message>.*)\s\((?<project>[^()]*)\)\s*$", RegexOptions.CultureInvariant)]
-    private static partial Regex FastLineWithProjectPattern();
+    private static Regex? fastLineWithProjectPattern;
+    private static Regex FastLineWithProjectPattern() => fastLineWithProjectPattern ??= new Regex(@"^FastUpToDate:\s*(?<message>.*)\s\((?<project>[^()]*)\)\s*$", RegexOptions.CultureInvariant);
 
-    [GeneratedRegex(@"^FastUpToDate:\s*(?<message>.*)\s*$", RegexOptions.CultureInvariant)]
-    private static partial Regex FastLinePlainPattern();
+    private static Regex? fastLinePlainPattern;
+    private static Regex FastLinePlainPattern() => fastLinePlainPattern ??= new Regex(@"^FastUpToDate:\s*(?<message>.*)\s*$", RegexOptions.CultureInvariant);
 
-    [GeneratedRegex(@"^------\s*(?:Build|Rebuild All|Clean|Deploy) started:\s*Project:\s*(?<name>.*?),\s*Configuration:\s*(?<config>.*?)\s*------\s*$", RegexOptions.CultureInvariant)]
-    private static partial Regex BuildStartedPattern();
+    private static Regex? buildStartedPattern;
+    private static Regex BuildStartedPattern() => buildStartedPattern ??= new Regex(@"^------\s*(?:Build|Rebuild All|Clean|Deploy) started:\s*Project:\s*(?<name>.*?),\s*Configuration:\s*(?<config>.*?)\s*------\s*$", RegexOptions.CultureInvariant);
 
-    [GeneratedRegex(@"(?:^Project |^Done Building Project )""(?<path>[^""]+\.csproj)""", RegexOptions.IgnoreCase | RegexOptions.CultureInvariant)]
-    private static partial Regex ProjectPathPattern();
+    private static Regex? projectPathPattern;
+    private static Regex ProjectPathPattern() => projectPathPattern ??= new Regex(@"(?:^Project |^Done Building Project )""(?<path>[^""]+\.csproj)""", RegexOptions.IgnoreCase | RegexOptions.CultureInvariant);
 
-    [GeneratedRegex(@"^Task ""(?<name>[^""]+)""\s*$", RegexOptions.CultureInvariant)]
-    private static partial Regex TaskPattern();
+    private static Regex? taskPattern;
+    private static Regex TaskPattern() => taskPattern ??= new Regex(@"^Task ""(?<name>[^""]+)""\s*$", RegexOptions.CultureInvariant);
 
-    [GeneratedRegex(@"Skipping target ""(?<name>[^""]+)"" because .+$", RegexOptions.IgnoreCase | RegexOptions.CultureInvariant)]
-    private static partial Regex SkipTargetPattern();
+    private static Regex? skipTargetPattern;
+    private static Regex SkipTargetPattern() => skipTargetPattern ??= new Regex(@"Skipping target ""(?<name>[^""]+)"" because .+$", RegexOptions.IgnoreCase | RegexOptions.CultureInvariant);
 
-    [GeneratedRegex(@"^Target ""(?<name>[^""]+)"" skipped\b", RegexOptions.IgnoreCase | RegexOptions.CultureInvariant)]
-    private static partial Regex TargetSkippedPattern();
+    private static Regex? targetSkippedPattern;
+    private static Regex TargetSkippedPattern() => targetSkippedPattern ??= new Regex(@"^Target ""(?<name>[^""]+)"" skipped\b", RegexOptions.IgnoreCase | RegexOptions.CultureInvariant);
 
-    [GeneratedRegex(@"^={5,}\s*(?<title>.*?)\s*={5,}$", RegexOptions.CultureInvariant)]
-    private static partial Regex SummaryPattern();
+    private static Regex? summaryPattern;
+    private static Regex SummaryPattern() => summaryPattern ??= new Regex(@"^={5,}\s*(?<title>.*?)\s*={5,}$", RegexOptions.CultureInvariant);
 
-    [GeneratedRegex(@"\b(?<uptodate>\d+)\s+up-to-date\b", RegexOptions.IgnoreCase | RegexOptions.CultureInvariant)]
-    private static partial Regex UpToDateCountPattern();
+    private static Regex? upToDateCountPattern;
+    private static Regex UpToDateCountPattern() => upToDateCountPattern ??= new Regex(@"\b(?<uptodate>\d+)\s+up-to-date\b", RegexOptions.IgnoreCase | RegexOptions.CultureInvariant);
 
-    [GeneratedRegex(@"Source\s+(?<time>[^:]+):\s+'(?<file>[^']+)'", RegexOptions.CultureInvariant)]
-    private static partial Regex SourcePathPattern();
+    private static Regex? sourcePathPattern;
+    private static Regex SourcePathPattern() => sourcePathPattern ??= new Regex(@"Source\s+(?<time>[^:]+):\s+'(?<file>[^']+)'", RegexOptions.CultureInvariant);
 }

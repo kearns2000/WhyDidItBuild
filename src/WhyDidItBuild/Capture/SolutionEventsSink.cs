@@ -15,7 +15,7 @@ internal sealed class SolutionEventsSink : IVsSolutionEvents
 
     public int OnAfterOpenProject(IVsHierarchy pHierarchy, int fAdded) => VSConstants.S_OK;
 
-    public int OnQueryCloseProject(IVsHierarchy pHierarchy, int fRemoving, out int pfCancel)
+    public int OnQueryCloseProject(IVsHierarchy pHierarchy, int fRemoving, ref int pfCancel)
     {
         pfCancel = 0;
         return VSConstants.S_OK;
@@ -25,7 +25,7 @@ internal sealed class SolutionEventsSink : IVsSolutionEvents
 
     public int OnAfterLoadProject(IVsHierarchy pStubHierarchy, IVsHierarchy pRealHierarchy) => VSConstants.S_OK;
 
-    public int OnQueryUnloadProject(IVsHierarchy pRealHierarchy, out int pfCancel)
+    public int OnQueryUnloadProject(IVsHierarchy pRealHierarchy, ref int pfCancel)
     {
         pfCancel = 0;
         return VSConstants.S_OK;
@@ -39,7 +39,7 @@ internal sealed class SolutionEventsSink : IVsSolutionEvents
         return VSConstants.S_OK;
     }
 
-    public int OnQueryCloseSolution(object pUnkReserved, out int pfCancel)
+    public int OnQueryCloseSolution(object pUnkReserved, ref int pfCancel)
     {
         pfCancel = 0;
         return VSConstants.S_OK;

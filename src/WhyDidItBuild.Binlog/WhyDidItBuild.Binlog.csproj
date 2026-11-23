@@ -1,6 +1,6 @@
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <TargetFramework>net10.0</TargetFramework>
+    <TargetFrameworks>net472;net10.0</TargetFrameworks>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
     <LangVersion>latest</LangVersion>
@@ -17,4 +17,12 @@
     -->
     <PackageReference Include="Microsoft.Build" Version="17.14.28" PrivateAssets="all" ExcludeAssets="runtime" />
   </ItemGroup>
+  <ItemGroup Condition="'$(TargetFrameworkIdentifier)' == '.NETFramework'">
+    <!-- Source-only polyfills (Index/Range, records, required members, newer string and collection APIs) for the net472 build the VSIX consumes. -->
+    <PackageReference Include="Polyfill" Version="11.4.5" PrivateAssets="all" />
+  </ItemGroup>
+  <PropertyGroup Condition="'$(TargetFramework)' == 'net472'">
+    <!-- The net472 BCL has no nullable annotations, so flow analysis there is noise. The net10.0 build still enforces it. -->
+    <Nullable>annotations</Nullable>
+  </PropertyGroup>
 </Project>

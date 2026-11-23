@@ -33,6 +33,9 @@
   <ItemGroup Condition="$([MSBuild]::IsOSPlatform('Windows'))">
     <PackageReference Include="Microsoft.VisualStudio.SDK" Version="17.14.40265" ExcludeAssets="runtime" />
     <PackageReference Include="Microsoft.VSSDK.BuildTools" Version="17.14.2142" PrivateAssets="all" />
+    <PackageReference Include="Polyfill" Version="11.4.5" PrivateAssets="all" />
+    <Using Include="Microsoft.VisualStudio.Threading" />
+    <Reference Include="System.Design" />
     <ProjectReference Include="..\WhyDidItBuild.Core\WhyDidItBuild.Core.csproj" />
     <ProjectReference Include="..\WhyDidItBuild.Binlog\WhyDidItBuild.Binlog.csproj" />
   </ItemGroup>

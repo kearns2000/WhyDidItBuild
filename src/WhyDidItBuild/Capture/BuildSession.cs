@@ -182,7 +182,7 @@ internal sealed class BuildSession : IDisposable
     {
         if (!ThreadHelper.CheckAccess())
         {
-            _ = _joinableTaskFactory.Run(async () =>
+            _joinableTaskFactory.Run(async () =>
             {
                 await _joinableTaskFactory.SwitchToMainThreadAsync();
                 Dispose();
@@ -210,7 +210,7 @@ internal sealed class BuildSession : IDisposable
     private string? CurrentSolutionPath()
     {
         ThreadHelper.ThrowIfNotOnUIThread();
-        if (_package.GetService(typeof(EnvDTE.DTE)) is DTE2 dte && dte.Solution is not null)
+        if (((IServiceProvider)_package).GetService(typeof(EnvDTE.DTE)) is DTE2 dte && dte.Solution is not null)
         {
             var fullName = dte.Solution.FullName;
             return string.IsNullOrWhiteSpace(fullName) ? null : fullName;
